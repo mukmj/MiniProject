@@ -131,9 +131,42 @@ public class HomeController {
 	public String contents(@PathVariable("no") int no, HttpServletRequest req) {
 		List<WriteBean> wb = session.selectList("test.contents", no);
 		req.setAttribute("wb", wb);
-		return "contents";
+		return "/contents";
 	}
 	
+	@RequestMapping("/delete")
+	public String delete(HttpServletRequest req) {
+		String no = req.getParameter("contentNo");
+		session.update("test.delete", no);
+		return "redirect:/main";
+	}
 	
+	@RequestMapping("/updateMove")
+	public String updateMove(HttpServletRequest req) {
+		int no = Integer.parseInt(req.getParameter("contentNo"));
+		List<WriteBean> wb = session.selectList("test.contents", no);
+		req.setAttribute("wb", wb);
+		return "/insert";
+	}
 	
+	@RequestMapping("/update")
+	public String update(HttpServletRequest req) {
+		System.out.println("업데이트");
+		String title = req.getParameter("title");
+		String comment = req.getParameter("comment");
+		int urlNo = Integer.parseInt(req.getParameter("urlNo"));
+		
+		System.out.println(urlNo);
+		
+		WriteBean wb = new WriteBean();
+		wb.setTitle(title);
+		wb.setComment(comment);
+		wb.setNo(urlNo);
+		
+		System.out.println(title+comment);
+		
+		session.update("test.update", wb);
+		
+		return "redirect:/contents/" + urlNo;
+	}
 }

@@ -8,7 +8,7 @@
 	</select>
 	
 	<select id="contents" resultType="com.java.web.WriteBean" parameterType="int">
-		SELECT title, `comment` FROM `write` WHERE `no` = #{no}
+		SELECT no, title, `comment` FROM `write` WHERE `no` = #{no}
 	</select>
 	
 	<insert id="loginInfo" parameterType="com.java.web.LoginInfoBean">
@@ -18,4 +18,13 @@
 	<insert id="insert" parameterType="com.java.web.WriteBean">
 		insert into `write` (title, comment, nickname) values (#{title}, #{comment}, #{nickname})
 	</insert>
+	
+	<update id="delete" parameterType="String">
+		UPDATE `write` SET delYn = 'Y' WHERE `no` = #{no}
+	</update>
+	
+	<update id="update" parameterType="com.java.web.WriteBean">
+		UPDATE `write` SET title = #{title}, `comment`= #{comment} WHERE `no` = #{no}
+	</update>
+	
 </mapper>

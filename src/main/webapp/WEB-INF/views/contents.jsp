@@ -52,5 +52,13 @@
     <div class="butt">
     	<button type="button" onclick="mainHome()">목록</button>
     </div>
+    
+	<form>
+		<input type="hidden" name="contentNo" value="<%=wb.get(0).getNo()%>">
+		<input type="submit" value="삭제" formaction="/delete">
+ 		<input type="submit" value="수정" formaction="/updateMove">
+	</form>
+   
+
 </body>
 </html>
