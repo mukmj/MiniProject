@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +27,9 @@ public class HomeController {
 	SqlSession session;
 	
 	@RequestMapping("/main")
-	public String main() {
+	public String main(HttpServletRequest req) {
+		List<WriteBean> list = session.selectList("test.select");
+		req.setAttribute("list", list);
 		return "home";
 	}
 	
@@ -109,6 +112,4 @@ public class HomeController {
 		session.insert("test.insert", wb);
 		return "redirect:/main";
 	}
-	
-	
 }

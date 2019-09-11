@@ -3,8 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="test">
-	<select id="select"> 
-		select 1 as cnt
+	<select id="select" resultType="com.java.web.WriteBean"> 
+		SELECT `no`, title, nickname FROM `write` WHERE delYn = 'N'
 	</select>
 	<insert id="loginInfo" parameterType="com.java.web.LoginInfoBean">
 		insert into kakaoLogin (id, nickname) values (#{id}, #{nickname})

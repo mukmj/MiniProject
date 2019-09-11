@@ -1,3 +1,5 @@
+<%@page import="com.java.web.WriteBean"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -47,12 +49,22 @@
             <li>제목</li>
             <li>작성자</li>
         </ul>
+ <%
+ 	List<WriteBean> list = (List<WriteBean>)request.getAttribute("list");
+	for(int i = 0 ; i < list.size() ; i++){
+		if(list == null){
+			System.out.print(1);
+		}else{
+ %>       
         <ul>
-            <li>1</li>
-            <li>asd</li>
-            <li>asd</li>
+            <li><%=list.get(i).getNo()%></li>
+            <li><%=list.get(i).getTitle()%></li>
+            <li><%=list.get(i).getNickname()%></li>
         </ul>
-        
+<%
+		}
+	}
+%>        
 		<div>
         	<button type="submit" onclick="move()">추가</button>
 		</div>
