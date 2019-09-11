@@ -91,9 +91,23 @@ public class HomeController {
 		return "redirect:/main";
 	}
 	
-	//insert 링크용
+	//insert 로그인없이 insert 방지
 	@RequestMapping("/insert")
-	public String insult() {
+	public String insult(HttpServletResponse res, HttpSession hs) {
+		String nickname = (String) hs.getAttribute("nickname");
+		
+		if(nickname == null) {
+			try {
+				res.setContentType("text/html; charset=UTF-8");
+				PrintWriter out;
+				out = res.getWriter();
+				out.println("<script>alert('로그인 해주세요. (로그인창으로 넘어갑니다.)'); location.href='/';</script>");
+				out.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		return "insert";
 	}
 	
@@ -105,25 +119,13 @@ public class HomeController {
 		String title = req.getParameter("title");
 		String comment = req.getParameter("comment");
 		
-//		if(nickname == null) {
-//			try {
-//				res.setContentType("text/html; charset=UTF-8");
-//				PrintWriter out;
-//				out = res.getWriter();
-//				out.println("<script>alert('로그인 해주세요. (로그인창으로 넘어갑니다.)'); location.href='/se';</script>");
-//				out.flush();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-			System.out.println(req.getParameter("title")+comment+nickname);
-			
-			WriteBean wb = new WriteBean();
-			wb.setTitle(title);
-			wb.setComment(comment);
-			wb.setNickname(nickname);
-			
-			session.insert("test.insert", wb);
+		System.out.println(req.getParameter("title")+comment+nickname);
+		
+		WriteBean wb = new WriteBean();
+		wb.setTitle(title);
+		wb.setComment(comment);
+		wb.setNickname(nickname);
+		session.insert("test.insert", wb);
 		return "redirect:/main";
 	}
 	
@@ -142,10 +144,13 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/updateMove")
-	public String updateMove(HttpServletRequest req) {
+	public String updateMove(HttpServletRequest req, HttpSession hs, HttpServletResponse res) {
 		int no = Integer.parseInt(req.getParameter("contentNo"));
+		String nickname = (String) hs.getAttribute("nickname");
+		String originalNick = session.selectOne("test.updateAth", no);
 		List<WriteBean> wb = session.selectList("test.contents", no);
 		req.setAttribute("wb", wb);
+		
 		return "/insert";
 	}
 	

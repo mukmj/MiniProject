@@ -11,6 +11,10 @@
 		SELECT no, title, `comment` FROM `write` WHERE `no` = #{no}
 	</select>
 	
+	<select id="updateAth" resultType="String" parameterType="int">
+		SELECT nickname FROM `write` WHERE `no` = #{no}
+	</select>
+	
 	<insert id="loginInfo" parameterType="com.java.web.LoginInfoBean">
 		insert into kakaoLogin (id, nickname) values (#{id}, #{nickname})
 	</insert>
@@ -26,5 +30,4 @@
 	<update id="update" parameterType="com.java.web.WriteBean">
 		UPDATE `write` SET title = #{title}, `comment`= #{comment} WHERE `no` = #{no}
 	</update>
-	
 </mapper>

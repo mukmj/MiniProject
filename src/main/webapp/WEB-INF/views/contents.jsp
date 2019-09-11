@@ -24,6 +24,10 @@
     	margin-top: 50px;
     	margin-left: 40px;
     }
+    
+    form {
+    	float: right;
+    }
 </style>
     
 <script>
@@ -51,14 +55,12 @@
     </div>
     <div class="butt">
     	<button type="button" onclick="mainHome()">목록</button>
-    </div>
-    
-	<form>
+    <form>
 		<input type="hidden" name="contentNo" value="<%=wb.get(0).getNo()%>">
+		<input type="submit" value="수정" formaction="/updateMove">
 		<input type="submit" value="삭제" formaction="/delete">
- 		<input type="submit" value="수정" formaction="/updateMove">
 	</form>
-   
+    </div>
 
 </body>
 </html>
