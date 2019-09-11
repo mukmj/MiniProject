@@ -32,11 +32,19 @@
         text-align: end;
         padding-top: 20px;
     }
+    
+    #event:hover {
+		background-color: #f0ecec;
+	}
 </style>
     
 <script>
 	function move(){
 		location.href="/insert";
+	}
+	
+	function contents(no){
+		location.href="/contents/" + no;
 	}
 </script>
 <title>Main</title>
@@ -56,7 +64,7 @@
 			System.out.print(1);
 		}else{
  %>       
-        <ul>
+        <ul onclick="contents(<%=list.get(i).getNo()%>)" id="event" style="cursor: pointer;">
             <li><%=list.get(i).getNo()%></li>
             <li><%=list.get(i).getTitle()%></li>
             <li><%=list.get(i).getNickname()%></li>
@@ -64,7 +72,7 @@
 <%
 		}
 	}
-%>        
+%>        	
 		<div>
         	<button type="submit" onclick="move()">추가</button>
 		</div>

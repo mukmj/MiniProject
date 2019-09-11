@@ -1,6 +1,7 @@
 package com.java.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -97,19 +99,41 @@ public class HomeController {
 	
 	//insert
 	@RequestMapping(value="/input", method = RequestMethod.POST)
-	public String input(HttpServletRequest req, HttpSession hs, @RequestParam("file") MultipartFile[] files) {
+	public String input(HttpServletRequest req, HttpSession hs, @RequestParam("file") MultipartFile[] files,
+			HttpServletResponse res) {
 		String nickname = (String) hs.getAttribute("nickname");
 		String title = req.getParameter("title");
 		String comment = req.getParameter("comment");
 		
-		System.out.println(req.getParameter("title")+comment+nickname);
-		
-		WriteBean wb = new WriteBean();
-		wb.setTitle(title);
-		wb.setComment(comment);
-		wb.setNickname(nickname);
-		
-		session.insert("test.insert", wb);
+//		if(nickname == null) {
+//			try {
+//				res.setContentType("text/html; charset=UTF-8");
+//				PrintWriter out;
+//				out = res.getWriter();
+//				out.println("<script>alert('로그인 해주세요. (로그인창으로 넘어갑니다.)'); location.href='/se';</script>");
+//				out.flush();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+			System.out.println(req.getParameter("title")+comment+nickname);
+			
+			WriteBean wb = new WriteBean();
+			wb.setTitle(title);
+			wb.setComment(comment);
+			wb.setNickname(nickname);
+			
+			session.insert("test.insert", wb);
 		return "redirect:/main";
 	}
+	
+	@RequestMapping("/contents/{no}")
+	public String contents(@PathVariable("no") int no, HttpServletRequest req) {
+		List<WriteBean> wb = session.selectList("test.contents", no);
+		req.setAttribute("wb", wb);
+		return "contents";
+	}
+	
+	
+	
 }

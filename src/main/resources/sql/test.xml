@@ -6,6 +6,11 @@
 	<select id="select" resultType="com.java.web.WriteBean"> 
 		SELECT `no`, title, nickname FROM `write` WHERE delYn = 'N'
 	</select>
+	
+	<select id="contents" resultType="com.java.web.WriteBean" parameterType="int">
+		SELECT title, `comment` FROM `write` WHERE `no` = #{no}
+	</select>
+	
 	<insert id="loginInfo" parameterType="com.java.web.LoginInfoBean">
 		insert into kakaoLogin (id, nickname) values (#{id}, #{nickname})
 	</insert>
