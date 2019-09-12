@@ -15,12 +15,24 @@
 		SELECT nickname FROM `write` WHERE `no` = #{no}
 	</select>
 	
+	<select id="no" parameterType="com.java.web.WriteBean" resultType="int">
+		select `no` from `write` where title = #{title} and `comment` = #{comment}
+	</select>
+
+	<select id="upload" resultType="com.java.web.FileBean">
+		select fileUrl, fileName from file where writeNo = #{no}
+	</select>
+	
 	<insert id="loginInfo" parameterType="com.java.web.LoginInfoBean">
 		insert into kakaoLogin (id, nickname) values (#{id}, #{nickname})
 	</insert>
 	
 	<insert id="insert" parameterType="com.java.web.WriteBean">
 		insert into `write` (title, comment, nickname) values (#{title}, #{comment}, #{nickname})
+	</insert>
+	
+	<insert id="fileUpload" parameterType="com.java.web.FileBean">
+		insert into `file` (writeNo, fileUrl, fileName) values (#{writeNo},#{fileUrl},#{fileName})
 	</insert>
 	
 	<update id="delete" parameterType="String">
@@ -30,4 +42,6 @@
 	<update id="update" parameterType="com.java.web.WriteBean">
 		UPDATE `write` SET title = #{title}, `comment`= #{comment} WHERE `no` = #{no}
 	</update>
+	
+	
 </mapper>
