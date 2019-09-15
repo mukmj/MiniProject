@@ -8,8 +8,21 @@
 <meta charset="UTF-8">
 <style>
     div {
-        height: 50vh;
-        width: 600px;
+   	 	width: 600px;
+        text-align: end;
+        padding-top: 20px;
+    }
+    
+    h1 {
+    	width: 300px;
+    }
+    
+    .cont1 {
+		text-align: right;
+    }
+    
+    .cont2 {
+    	height: 50vh;
     }
     
     ul{
@@ -26,11 +39,6 @@
         text-align: center;
         border: 1px solid grey;
         box-sizing: border-box;
-    }
-    
-    div {
-        text-align: end;
-        padding-top: 20px;
     }
     
     #event:hover {
@@ -50,8 +58,13 @@
 <title>Main</title>
 </head>
 <body>
-    <h1>게시판</h1> 
-    <div>
+	<div class="cont1">
+    	<form action="/logout">
+    		<button type="submit">로그아웃</button>
+   	 	</form>
+   	</div>
+    <h1>게시판</h1>
+    <div class="cont2">
         <ul>
             <li>번호</li>
             <li>제목</li>

@@ -42,6 +42,4 @@
 	<update id="update" parameterType="com.java.web.WriteBean">
 		UPDATE `write` SET title = #{title}, `comment`= #{comment} WHERE `no` = #{no}
 	</update>
-	
-	
 </mapper>

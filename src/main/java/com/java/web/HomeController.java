@@ -52,7 +52,7 @@ public class HomeController {
 		try {
 			String url="https://kauth.kakao.com/oauth/authorize?";
 			url += "client_id=4495df76b551265db038d72cd7db5f1d&redirect_uri=";
-			url += URLEncoder.encode("http://gdj16.gudi.kr:20004/back", "UTF-8") +"&response_type=code";
+			url += URLEncoder.encode("http://192.168.0.3:8080/back", "UTF-8") +"&response_type=code";
 			res.sendRedirect(url);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -64,10 +64,12 @@ public class HomeController {
 	@RequestMapping("/back")
 	public String back(HttpServletRequest req, HttpServletResponse res) {
 		try {
+			HttpSession httpsession = req.getSession();
+			
 			String code = req.getParameter("code");
 			String url = "https://kauth.kakao.com/oauth/token?";
 			url += "client_id=4495df76b551265db038d72cd7db5f1d&redirect_uri=";
-			url += URLEncoder.encode("http://gdj16.gudi.kr:20004/back", "UTF-8");
+			url += URLEncoder.encode("http://192.168.0.3:8080/back", "UTF-8");
 			url += "&code=" + code;
 			url += "&grant_type=authorization_code";
 			
@@ -76,6 +78,7 @@ public class HomeController {
 			
 			String userUrl = "https://kapi.kakao.com/v2/user/me";
 			userUrl += "?access_token=" + resultMap.get("access_token");
+			httpsession.setAttribute("access_token", resultMap.get("access_token"));
 			
 			resultMap = HttpUtil.getUrl(userUrl);
 			System.out.println(resultMap);
@@ -88,7 +91,7 @@ public class HomeController {
 			log.setNickname(nickname);
 			
 			System.out.println(nickname);
-			HttpSession httpsession = req.getSession();
+			
 			httpsession.setAttribute("nickname", nickname);
 			
 			session.insert("test.loginInfo", log);
@@ -102,18 +105,17 @@ public class HomeController {
 	@RequestMapping("/insert")
 	public String insult(HttpServletResponse res, HttpSession hs) {
 		String nickname = (String) hs.getAttribute("nickname");
-		
-//		if(nickname == null) {
-//			try {
-//				res.setContentType("text/html; charset=UTF-8");
-//				PrintWriter out;
-//				out = res.getWriter();
-//				out.println("<script>alert('로그인 해주세요. (로그인창으로 넘어갑니다.)'); location.href='/';</script>");
-//				out.flush();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		if(nickname == null) {
+			try {
+				res.setContentType("text/html; charset=UTF-8");
+				PrintWriter out;
+				out = res.getWriter();
+				out.println("<script>alert('로그인 해주세요. (로그인창으로 넘어갑니다.)'); location.href='/';</script>");
+				out.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		return "insert";
 	}
@@ -122,6 +124,7 @@ public class HomeController {
 	@RequestMapping(value="/input", method = RequestMethod.POST)
 	public String input(HttpServletRequest req, HttpSession hs, @RequestParam("file") MultipartFile[] files,
 			HttpServletResponse res) {
+		
 		String nickname = (String) hs.getAttribute("nickname");
 		String title = req.getParameter("title");
 		String comment = req.getParameter("comment");
@@ -167,6 +170,7 @@ public class HomeController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return "redirect:/main";
 	}
 	
