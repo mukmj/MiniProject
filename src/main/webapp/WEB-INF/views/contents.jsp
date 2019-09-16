@@ -64,7 +64,7 @@
         <ul>
             <li class="line">내용</li>
 <%
-	if(wb.get(0).getComment() != null){
+	if(!wb.get(0).getComment().equals("")){
 %>
             <li><%=wb.get(0).getComment()%></li>
 <%
@@ -74,16 +74,16 @@
         <ul style="margin-top: 50px;">
             <li class="line">첨부파일</li>        
 <%
-	if(fbList != null){
 		for(int i = 0 ; i < fbList.size(); i++){
+			if(!fbList.get(i).getFileName().equals("")){
 %>
 		 <form action="/download/<%=i%>">
             	<input type="hidden" name="no" value="<%=wb.get(0).getNo()%>">
             	<button type="submit" class="butStyle"><%=fbList.get(i).getFileName()%></button>
          </form>
 <%
+			}
 		}
-	}
 %>
         </ul>
     </div>

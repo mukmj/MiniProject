@@ -58,7 +58,7 @@ public class HomeController {
 			url += URLEncoder.encode("http://gdj16.gudi.kr:20004/back", "UTF-8") +"&response_type=code";
 			String url2 = "https://accounts.kakao.com/login?continue=";
 			url2+=URLEncoder.encode(url, "UTF-8");
-			res.sendRedirect(url);
+			res.sendRedirect(url2);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -146,7 +146,10 @@ public class HomeController {
 			for(int i = 0 ; i < files.length; i++) {
 				MultipartFile file = files[i];
 				String originalFileName = file.getOriginalFilename();
-				String ext = originalFileName.substring(originalFileName.lastIndexOf("."), originalFileName.length());
+				String ext = "";
+				if(!file.isEmpty()) {
+					ext = originalFileName.substring(originalFileName.lastIndexOf("."), originalFileName.length());
+				}
 				String fileName = UUID.randomUUID().toString();
 				
 				byte[] data = file.getBytes();
@@ -175,7 +178,6 @@ public class HomeController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return "redirect:/main";
 	}
 	
