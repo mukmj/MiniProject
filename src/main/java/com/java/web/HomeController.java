@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +55,9 @@ public class HomeController {
 		try {
 			String url="https://kauth.kakao.com/oauth/authorize?";
 			url += "client_id=4495df76b551265db038d72cd7db5f1d&redirect_uri=";
-			url += URLEncoder.encode("http://192.168.0.3:8080/back", "UTF-8") +"&response_type=code";
+			url += URLEncoder.encode("http://gdj16.gudi.kr:20004/back", "UTF-8") +"&response_type=code";
+			String url2 = "https://accounts.kakao.com/login?continue=";
+			url2+=URLEncoder.encode(url, "UTF-8");
 			res.sendRedirect(url);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -69,7 +74,7 @@ public class HomeController {
 			String code = req.getParameter("code");
 			String url = "https://kauth.kakao.com/oauth/token?";
 			url += "client_id=4495df76b551265db038d72cd7db5f1d&redirect_uri=";
-			url += URLEncoder.encode("http://192.168.0.3:8080/back", "UTF-8");
+			url += URLEncoder.encode("http://gdj16.gudi.kr:20004/back", "UTF-8");
 			url += "&code=" + code;
 			url += "&grant_type=authorization_code";
 			
@@ -185,6 +190,8 @@ public class HomeController {
 		HashMap<String, String> nick = new HashMap<String, String>();
 		nick.put("nickname", nickname);
 		nick.put("originalNick", originalNick);
+		System.out.println("가는거:" + nick.get("nickname"));
+		System.out.println("가는거2:" + nick.get("originalNick"));
 		
 		List<FileBean> fileList = session.selectList("test.upload", no);
 		req.setAttribute("fileList", fileList);
@@ -248,5 +255,23 @@ public class HomeController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpSession hs) {
+		try {
+			String access_token = (String)hs.getAttribute("access_token");
+			String url = "https://kapi.kakao.com/v1/user/logout";
+			
+			URL u = new URL(url);
+			HttpURLConnection conn = (HttpURLConnection)u.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Authorization", "Bearer " + access_token);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "login";
 	}
 }

@@ -92,8 +92,8 @@
     	<form class="right">
 			<input type="hidden" name="contentNo" value="<%=wb.get(0).getNo()%>">
 <%
-	HashMap<String, String> nick = (HashMap<String, String>)request.getAttribute("nick");
-	if(nick.get("nickname") == nick.get("originalNick")) {
+	HashMap<String, String> nick = (HashMap<String, String>) request.getAttribute("nick");
+	if(nick.get("nickname").equals(nick.get("originalNick"))) {
 %>	
 			<input type="submit" value="수정" id="update" formaction="/updateMove">
 			<input type="submit" value="삭제" formaction="/delete">
